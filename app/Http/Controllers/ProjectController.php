@@ -10,7 +10,7 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required';
+            'name' => 'required',
             'web-site' => 'required|url',
             'slug' => 'required|string|unique:projects,slug',
             'description' => 'required|string',
