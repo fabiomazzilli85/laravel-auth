@@ -51,4 +51,18 @@ class ProjectController extends Controller
         // Vengo reindirizzato. Compare un altro messaggio.  
         return redirect()->route('projects.index')->with('success', 'Progetto aggiornato.');
     }
+
+    public function destroy(Project $project)
+{
+    // L'utente è loggato?
+    if (auth()->user()->id !== $project->user_id) {
+        return abort(403); // Accesso negato
+    }
+    
+    // Elimina il progetto
+    $project->delete();
+
+    // Reindirizzamento con terzo messaggio.
+    return redirect()->route('projects.index')->with('success', 'Progetto eliminato.');
+}
 }
