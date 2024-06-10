@@ -10,18 +10,17 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'name' => 'required';
             'web-site' => 'required|url',
             'slug' => 'required|string|unique:projects,slug',
+            'description' => 'required|string',
         ]);
 
         // Nuovo progetto.
         $project = new Project();
-        $project->title = $request->title;
-        $project->description = $request->description;
-        $project->name = $request->name; // Manca l'input per il campo name
-        $project->web_site = $request->input('web-site'); // Campo web-site
+        $project->name = $request->name;
+        $project->description = $request->description; 
+        $project->web_site = $request->input('web-site'); 
         $project->slug = $request->slug;
         $project->user_id = auth()->user()->id;
         $project->save();
@@ -33,19 +32,17 @@ class ProjectController extends Controller
     public function update(Request $request, Project $project)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
             'name' => 'required|string|max:255',
             'web-site' => 'nullable|url',
-            'slug' => 'required|string|unique:projects,slug,' . $project->id, // Assicura che lo slug sia univoco, escludendo l'ID del progetto corrente
+            'slug' => 'required|string|unique:projects,slug,' . $project->id,
+            'description' => 'required|string',
         ]);
 
         // Qui invece lo aggiorno. 
-        $project->title = $request->title;
-        $project->description = $request->description;
         $project->name = $request->name;
         $project->web_site = $request->input('web-site'); // Campo web-site
         $project->slug = $request->slug;
+        $project->description = $request->description;
         $project->save();
 
         // Vengo reindirizzato. Compare un altro messaggio.  
